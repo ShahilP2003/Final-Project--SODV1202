@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "Sd4y34hKJNB0ystIUxCl+4LkgOpH604tZ67BQ9JEZjQuunA1HFgDAIhbwWnG+93W4DbRakWxwMB8ZIAdTTtNtA==",
+  "dgSpecHash": "LU0PB4v9KWPNJ2al4DIrqKyNcDXG3M8tpaXKrpE+kDSdHL6xUX4asV3Pt3Ah52WwO1KqrZ/nOFRVqTGOraldJw==",
   "success": true,
-  "projectFilePath": "E:\\Main College Folder\\Semester 2\\SODV 1202\\Hand In Items\\Assignements\\FinalProject\\FinalProject\\FinalProject.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\prora\\Desktop\\collab(git)\\FinalProject\\FinalProject.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\prora\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.1.0\\microsoft.windowsdesktop.app.ref.3.1.0.nupkg.sha512",
+    "C:\\Users\\prora\\.nuget\\packages\\microsoft.netcore.app.ref\\3.1.0\\microsoft.netcore.app.ref.3.1.0.nupkg.sha512",
+    "C:\\Users\\prora\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
+    "C:\\Users\\prora\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.32\\microsoft.netcore.app.host.win-x64.3.1.32.nupkg.sha512"
+  ],
   "logs": []
 }
