@@ -15,6 +15,11 @@ namespace FinalProject
                 one for vertical, horizontal and diaganol
      
      */
+
+    public class players
+    {
+
+    }
     public class Grid
     {
         private int[,] grid = new int[6, 7];
@@ -30,19 +35,37 @@ namespace FinalProject
                 Console.WriteLine();
             }
         }
+
+        public void ReplaceGridValue(int col, int value) 
+        {
+            for (int row = 5 ; row >= 0; row--) 
+            {
+                if (grid[row, col] == 0)
+                {
+                    grid[row, col] = value;
+                    break;
+                }
+            }
+        }
+
     }
 
-
+    
 
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Welcome to Connect 4!");
 
             Grid grid = new Grid();
             grid.Display();
-
+            Console.WriteLine();
+            grid.ReplaceGridValue(3, 1);
+            grid.Display();
+            Console.WriteLine() ;
+            grid.ReplaceGridValue(3, 2);
+            grid.Display();
 
         }
     }
