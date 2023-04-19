@@ -15,17 +15,23 @@ namespace FinalProject
                 one for vertical, horizontal and diaganol
      
      */
-    class grid
+    public class Grid
     {
-        int[,] PlayingGrid = new int[6,7];
+        private int[,] grid = new int[6, 7];
 
-        public int GridDisplay()
+        public void Display()
         {
-            int l;
-            l = 1;
-            return l;
+            for (int row = 0; row < 6; row++)
+            {
+                for (int col = 0; col < 7; col++)
+                {
+                    Console.Write(grid[row, col] + " ");
+                }
+                Console.WriteLine();
+            }
         }
     }
+
 
 
     internal class Program
@@ -33,6 +39,11 @@ namespace FinalProject
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+
+            Grid grid = new Grid();
+            grid.Display();
+
+
         }
     }
 }
