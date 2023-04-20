@@ -58,6 +58,14 @@ namespace FinalProject
                 return "Invalid Player Count";
             }
         }
+
+        public int GetInput()
+        {
+            Console.WriteLine("Enter the Column Number You Want to Place a Peice in: \nOptions: 1, 2, 3, 4, 5, 6, 7");
+            int input = int.Parse(Console.ReadLine());
+            input--;
+            return input;
+        }
     }
     public class Grid
     {
@@ -75,9 +83,9 @@ namespace FinalProject
             }
         }
 
-        public void ReplaceGridValue(int col, int value) 
+        public void ReplaceGridValue(int col, int value)
         {
-            for (int row = 5 ; row >= 0; row--) 
+            for (int row = 5; row >= 0; row--)
             {
                 if (grid[row, col] == 0)
                 {
@@ -97,13 +105,13 @@ namespace FinalProject
                     win = true;
                     break;
                 }
-                else if(grid[i, col] == value && grid[i + 1, col] == value && grid[i + 2, col] == value && grid[i + 3, col] == value)
+                else if (grid[i, col] == value && grid[i + 1, col] == value && grid[i + 2, col] == value && grid[i + 3, col] == value)
                 {
                     win = true;
                     break;
                 }
             }
-            
+
 
             if (win == true)
             {
@@ -115,17 +123,17 @@ namespace FinalProject
             }
         }
 
-        /*public string CheckWinHorizontal(int col, int value)
+        public string CheckWinHorizontal(int col, int value)
         {
             bool win = false;
             for (int i = 0; i < 6; i++)
             {
-                if (grid[i,col]== value && grid[i, col + 1] == value && grid[i, col + 2] == value && grid[i, col + 3] == value)
+                if (grid[i, col] == value && grid[i, col - 1] == value && grid[i, col - 2] == value && grid[i, col - 3] == value)
                 {
                     win = true;
                     break;
                 }
-                else if (grid[i, col] == value && grid[i, col - 1] == value && grid[i, col - 2] == value && grid[i, col - 3] == value)
+                else if (grid[i, col] == value && grid[i, col + 1] == value && grid[i, col + 2] == value && grid[i, col + 3] == value)
                 {
                     win = true;
                     break;
@@ -141,11 +149,55 @@ namespace FinalProject
                 return "e";
             }
         }
-        */
+
+        public string CheckWinDiagonal(int col, int value)
+        {
+            bool win = false;
+            for (int i = 0; i < 6; i++)
+            {
+                if (grid[i, col] == value)
+                {
+
+                    // Check for diagonal connections in the down-right direction
+                    if (i + 3 < 6 && col + 3 < 7 && grid[i + 1, col + 1] == value && grid[i + 2, col + 2] == value && grid[i + 3, col + 3] == value)
+                    {
+                        win = true;
+                        break;
+                    }
+                    // Check for diagonal connections in the down-left direction
+                    else if (i + 3 < 6 && col - 3 >= 0 && grid[i + 1, col - 1] == value && grid[i + 2, col - 2] == value && grid[i + 3, col - 3] == value)
+                    {
+                        win = true;
+                        break;
+                    }
+                    // Check for diagonal connections in the up-right direction
+                    else if (i - 3 >= 0 && col + 3 < 7 && grid[i - 1, col + 1] == value && grid[i - 2, col + 2] == value && grid[i - 3, col + 3] == value)
+                    {
+                        win = true;
+                        break;
+                    }
+                    // Check for diagonal connections in the up-left direction
+                    else if (i - 3 >= 0 && col - 3 >= 0 && grid[i - 1, col - 1] == value && grid[i - 2, col - 2] == value && grid[i - 3, col - 3] == value)
+                    {
+                        win = true;
+                        break;
+                    }
+                }
+            }
+
+            if (win == true)
+            {
+                return "Congrats Player " + value;
+            }
+            else
+            {
+                return "e";
+            }
+        }
 
     }
 
-    
+
 
     internal class Program
     {
@@ -159,39 +211,54 @@ namespace FinalProject
             players player = new players(1);
 
             Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(3, player.icon());
+            grid.ReplaceGridValue(player.GetInput(), player.icon());
             grid.Display();
             player.UpdatePlayer();
 
             Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(2, player.icon());
+            grid.ReplaceGridValue(player.GetInput(), player.icon());
             grid.Display();
             player.UpdatePlayer();
 
             Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(4, player.icon());
+            grid.ReplaceGridValue(player.GetInput(), player.icon());
             grid.Display();
             player.UpdatePlayer();
 
             Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(2, player.icon());
+            grid.ReplaceGridValue(player.GetInput(), player.icon());
             grid.Display();
             player.UpdatePlayer();
 
             Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(5, player.icon());
+            grid.ReplaceGridValue(player.GetInput(), player.icon());
             grid.Display();
             player.UpdatePlayer();
 
             Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(2, player.icon());
+            grid.ReplaceGridValue(player.GetInput(), player.icon());
             grid.Display();
             player.UpdatePlayer();
 
             Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(6, player.icon());
+            grid.ReplaceGridValue(player.GetInput(), player.icon());
             grid.Display();
-            grid.CheckWinHorizontal(6, player.icon());
+            player.UpdatePlayer();
+
+            Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
+            grid.ReplaceGridValue(player.GetInput(), player.icon());
+            grid.Display();
+            player.UpdatePlayer();
+
+            Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
+            grid.ReplaceGridValue(player.GetInput(), player.icon());
+            grid.Display();
+            player.UpdatePlayer();
+
+            Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
+            grid.ReplaceGridValue(player.GetInput(), player.icon());
+            grid.Display();
+            Console.WriteLine(grid.CheckWinDiagonal(player.GetInput(), player.icon()));
             player.UpdatePlayer();
 
         }
