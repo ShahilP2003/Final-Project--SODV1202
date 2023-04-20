@@ -22,7 +22,7 @@ namespace FinalProject
     public class players
     {
         int currentPlayer;
-        public players(int player)
+        public players(int  player)
         {
             currentPlayer = player;
         }
@@ -58,8 +58,15 @@ namespace FinalProject
                 return "Invalid Player Count";
             }
         }
+        public int GetInput()
+        {
+            Console.WriteLine("Enter the Column Number You Want to Place a Peice in: \n Options: 1, 2, 3, 4, 5, 6, 7");
+            int input = int.Parse(Console.ReadLine());
+            input--;
+            return input;
+        }
     }
-    public class Grid
+    public class Grid 
     {
         private int[,] grid = new int[6, 7];
 
@@ -115,22 +122,23 @@ namespace FinalProject
             }
         }
 
-        /*public string CheckWinHorizontal(int col, int value)
+        public string CheckWinHorizontal(int col, int value)
         {
             bool win = false;
             for (int i = 0; i < 6; i++)
             {
-                if (grid[i,col]== value && grid[i, col + 1] == value && grid[i, col + 2] == value && grid[i, col + 3] == value)
+                if (grid[i, col] == value && grid[i, col - 1] == value && grid[i, col - 2] == value && grid[i, col - 3] == value)
                 {
                     win = true;
                     break;
                 }
-                else if (grid[i, col] == value && grid[i, col - 1] == value && grid[i, col - 2] == value && grid[i, col - 3] == value)
+                else if (grid[i, col] == value && grid[i, col + 1] == value && grid[i, col + 2] == value && grid[i, col + 3] == value)
                 {
                     win = true;
                     break;
                 }
             }
+
             if (win == true)
             {
                 return "Congrats Player " + value;
@@ -140,7 +148,60 @@ namespace FinalProject
                 return "e";
             }
         }
-        */
+
+        public string CheckWinDiagonal( int row, int col, int value)
+        {
+            int count = 0;
+
+            // Check diagonal from bottom-left to top-right
+            for (int i = -3; i <= 3; i++)
+            {
+                if (row + i < 0 || row + i >= 6 || col + i < 0 || col + i >= 7)
+                {
+                    continue;
+                }
+
+                if (grid[row + i, col + i] == value)
+                {
+                    count++;
+                    if (count == 4)
+                    {
+                        return "Congrats Player " + value;
+                    }
+                }
+                else
+                {
+                    count = 0;
+                }
+            }
+
+            count = 0;
+
+            // Check diagonal from top-left to bottom-right
+            for (int i = -3; i <= 3; i++)
+            {
+                if (row - i < 0 || row - i >= 6 || col + i < 0 || col + i >= 7)
+                {
+                    continue;
+                }
+
+                if (grid[row - i, col + i] == value)
+                {
+                    count++;
+                    if (count == 4)
+                    {
+                        return "Congrats Player " + value;
+                    }
+                }
+                else
+                {
+                    count = 0;
+                }
+            }
+
+            return "e";
+        }
+
 
     }
 
@@ -157,6 +218,23 @@ namespace FinalProject
             grid.Display();
 
             players player = new players(1);
+            
+            bool Winner = !true;
+
+            while (Winner = true)
+            {
+                
+                Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
+                grid.ReplaceGridValue(player.GetInput(), player.icon());
+                grid.Display();
+                player.UpdatePlayer();
+            }
+                
+            
+
+            
+
+            
 
 
         }
