@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Data.Common;
+using System.Net.Http.Headers;
 using System.Numerics;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Cryptography;
 
 namespace FinalProject
 {
@@ -95,7 +97,7 @@ namespace FinalProject
             }
         }
 
-        public string CheckWinVertical(int col, int value)
+        internal bool CheckWinVertical(int col, int value)
         {
             bool win = false;
             for (int i = 0; i < 6; i++)
@@ -115,12 +117,14 @@ namespace FinalProject
 
             if (win == true)
             {
-                return "Congrats Player " + value;
+                return true;
             }
             else
             {
-                return "e";
+                return false;
             }
+            
+         
         }
 
         public string CheckWinHorizontal(int col, int value)
@@ -150,67 +154,10 @@ namespace FinalProject
             }
         }
 
-        public string CheckWinDiagonal( int row, int col, int value)
-        {
-            int count = 0;
-
-            // Check diagonal from bottom-left to top-right
-            for (int i = -3; i <= 3; i++)
-            {
-                if (row + i < 0 || row + i >= 6 || col + i < 0 || col + i >= 7)
-                {
-                    continue;
-                }
-
-                if (grid[row + i, col + i] == value)
-                {
-                    count++;
-                    if (count == 4)
-                    {
-                        return "Congrats Player " + value;
-                    }
-                }
-                else
-                {
-                    count = 0;
-                }
-            }
-
-            count = 0;
-
-            // Check diagonal from top-left to bottom-right
-            for (int i = -3; i <= 3; i++)
-            {
-                if (row - i < 0 || row - i >= 6 || col + i < 0 || col + i >= 7)
-                {
-                    continue;
-                }
-
-                if (grid[row - i, col + i] == value)
-                {
-                    count++;
-                    if (count == 4)
-                    {
-                        return "Congrats Player " + value;
-                    }
-                }
-                else
-                {
-                    count = 0;
-                }
-            }
-
-            return "e";
-        }
-
 
     }
 
-    public  abstract class WinnersFormula
-    {
-
-    }
-
+  
 
 
     internal class Program
@@ -235,6 +182,12 @@ namespace FinalProject
                 grid.ReplaceGridValue(player.GetInput(), player.icon());
                 Console.WriteLine();
                 grid.Display();
+                
+                    if (grid.CheckWinVertical(player.GetInput(), player.icon())  == true)
+                    {
+                        Console.WriteLine("Congrats player {0}, you win!!!", player.icon());
+                        Winner = 1;
+                    }
                 player.UpdatePlayer();
 
                 }
@@ -243,6 +196,9 @@ namespace FinalProject
                     Console.WriteLine("\n" +
                         "Error pls input either 1, 2, 3, 4, 5, 6, or 7"); 
                 }
+                
+                
+               
                
 
             }
