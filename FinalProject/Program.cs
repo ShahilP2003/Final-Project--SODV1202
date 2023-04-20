@@ -66,6 +66,7 @@ namespace FinalProject
             Console.WriteLine() ;
             grid.ReplaceGridValue(3, 2);
             grid.Display();
+            
 
         }
     }
