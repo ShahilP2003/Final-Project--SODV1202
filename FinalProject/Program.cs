@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Common;
 using System.Numerics;
+using System.Reflection.Metadata;
 using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace FinalProject
@@ -205,6 +206,11 @@ namespace FinalProject
 
     }
 
+    public  abstract class WinnersFormula
+    {
+
+    }
+
 
 
     internal class Program
@@ -227,14 +233,17 @@ namespace FinalProject
                 {
                 Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
                 grid.ReplaceGridValue(player.GetInput(), player.icon());
+                Console.WriteLine();
                 grid.Display();
                 player.UpdatePlayer();
 
                 }
-                catch (Exception e) 
+                catch (Exception) 
                 { 
-                    Console.WriteLine("Error pls input either 1,2,3,4,5,6,7"); 
+                    Console.WriteLine("\n" +
+                        "Error pls input either 1, 2, 3, 4, 5, 6, or 7"); 
                 }
+               
 
             }
                 
