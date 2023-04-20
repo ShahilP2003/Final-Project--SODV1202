@@ -219,15 +219,23 @@ namespace FinalProject
 
             players player = new players(1);
             
-            bool Winner = !true;
+            int Winner = 0;
 
-            while (Winner = true)
+            while (Winner == 0)
             {
-                
+                try
+                {
                 Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
                 grid.ReplaceGridValue(player.GetInput(), player.icon());
                 grid.Display();
                 player.UpdatePlayer();
+
+                }
+                catch (Exception e) 
+                { 
+                    Console.WriteLine("Error pls input either 1,2,3,4,5,6,7"); 
+                }
+
             }
                 
             
