@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Data.Common;
+using System.Numerics;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace FinalProject
 {
@@ -16,15 +19,47 @@ namespace FinalProject
      
      */
 
-    public abstract class players
+    public class players
     {
-        int player1;
-        int player2;
+        int currentPlayer;
+        public players(int player)
+        {
+            currentPlayer = player;
+        }
 
-        int turns;
+        public int icon() { return currentPlayer; }
 
+        public int UpdatePlayer()
+        {
+            if (currentPlayer == 1)
+            {
+                return currentPlayer++;
+            }
+            else if (currentPlayer == 2)
+            {
+                return currentPlayer--;
+            }
+            else { return currentPlayer = 1; }
+
+        }
+
+        public string DisplayPlayer()
+        {
+            if (currentPlayer == 1)
+            {
+                return "1";
+            }
+            else if (currentPlayer == 2)
+            {
+                return "2";
+            }
+            else
+            {
+                return "Invalid Player Count";
+            }
+        }
     }
-    public class Grid : players
+    public class Grid
     {
         private int[,] grid = new int[6, 7];
 
@@ -40,9 +75,9 @@ namespace FinalProject
             }
         }
 
-        public void ReplaceGridValue(int col, int value) 
+        public void ReplaceGridValue(int col, int value)
         {
-            for (int row = 5 ; row >= 0; row--) 
+            for (int row = 5; row >= 0; row--)
             {
                 if (grid[row, col] == 0)
                 {
@@ -52,25 +87,77 @@ namespace FinalProject
             }
         }
 
+        public string CheckWinVertical(int col, int value)
+        {
+            bool win = false;
+            for (int i = 0; i < 6; i++)
+            {
+                if (grid[i, col] == value && grid[i - 1, col] == value && grid[i - 2, col] == value && grid[i - 3, col] == value)
+                {
+                    win = true;
+                    break;
+                }
+                else if (grid[i, col] == value && grid[i + 1, col] == value && grid[i + 2, col] == value && grid[i + 3, col] == value)
+                {
+                    win = true;
+                    break;
+                }
+            }
+
+
+            if (win == true)
+            {
+                return "Congrats Player " + value;
+            }
+            else
+            {
+                return "e";
+            }
+        }
+
+        /*public string CheckWinHorizontal(int col, int value)
+        {
+            bool win = false;
+            for (int i = 0; i < 6; i++)
+            {
+                if (grid[i,col]== value && grid[i, col + 1] == value && grid[i, col + 2] == value && grid[i, col + 3] == value)
+                {
+                    win = true;
+                    break;
+                }
+                else if (grid[i, col] == value && grid[i, col - 1] == value && grid[i, col - 2] == value && grid[i, col - 3] == value)
+                {
+                    win = true;
+                    break;
+                }
+            }
+            if (win == true)
+            {
+                return "Congrats Player " + value;
+            }
+            else
+            {
+                return "e";
+            }
+        }
+        */
+
     }
 
-    
+
 
     internal class Program
     {
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Connect 4!");
-
+            Console.WriteLine("Rules \n" + "Player 1 = 1\n" + "Player 2 = 2\n" + "if one of the player connect 4 tokens in a line They win" );
+                
             Grid grid = new Grid();
             grid.Display();
-            Console.WriteLine();
-            grid.ReplaceGridValue(3, 1);
-            grid.Display();
-            Console.WriteLine() ;
-            grid.ReplaceGridValue(3, 2);
-            grid.Display();
-            
+
+            players player = new players(1);
+
 
         }
     }
