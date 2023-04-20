@@ -16,11 +16,15 @@ namespace FinalProject
      
      */
 
-    public class players
+    public abstract class players
     {
+        int player1;
+        int player2;
+
+        int turns;
 
     }
-    public class Grid
+    public class Grid : players
     {
         private int[,] grid = new int[6, 7];
 
