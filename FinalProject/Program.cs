@@ -97,7 +97,7 @@ namespace FinalProject
             }
         }
 
-        internal bool CheckWinVertical(int col, int value)
+        public bool CheckWinVertical(int col, int value)
         {
             bool win = false;
             for (int i = 0; i < 6; i++)
@@ -157,7 +157,14 @@ namespace FinalProject
 
     }
 
-  
+  public class WinnerFormula
+    {
+        Grid grid;
+        public WinnerFormula(Grid grid)
+        {
+            
+        }
+    }
 
 
     internal class Program
@@ -181,15 +188,10 @@ namespace FinalProject
                 Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
                 grid.ReplaceGridValue(player.GetInput(), player.icon());
                 Console.WriteLine();
+                player.UpdatePlayer();
                 grid.Display();
                 
-                    if (grid.CheckWinVertical(player.GetInput(), player.icon())  == true)
-                    {
-                        Console.WriteLine("Congrats player {0}, you win!!!", player.icon());
-                        Winner = 1;
-                    }
-                player.UpdatePlayer();
-
+                
                 }
                 catch (Exception) 
                 { 
