@@ -5,24 +5,25 @@ using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace FinalProject
 {
+    public abstract class PlayerInfo
+    {
+        string Name;
 
-    /*
-     probelms:
-        players 
-            - the player must be able to manipulate the table (2d array) 
-                (after choosing one of 7 rows they place a token at the bottom of the collumn)
-            - make the program to switch players after they make a move in the grid
-        Grid
-            - making a 2d array and display it as our game board
-            - (major issue) make a logic to figure if its a connect 4
-                one for vertical, horizontal and diaganol
-     
-     */
+        public PlayerInfo(string name)
+        {
+            Name = name;
+        }
+        public virtual string DisplayName()
+        {
+            return Name;
+        }
+    }
 
-    public class players
+
+    public class players : PlayerInfo
     {
         int currentPlayer;
-        public players(int player)
+        public players(int player, string name) : base(name)
         {
             currentPlayer = player;
         }
@@ -75,7 +76,51 @@ namespace FinalProject
             return input;
         }
     }
-    public class Grid
+
+    public abstract class Draw 
+    {
+        //if grid is full meaning no zero int 2d it means draw
+        //if draw reset the grid
+
+        public void ResetGrid(int[,] grid)
+        {
+            int numRows = grid.GetLength(0);
+            int numCols = grid.GetLength(1);
+            bool hasZero = false;
+
+            for (int i = 0; i < numRows; i++)
+            {
+                for (int j = 0; j < numCols; j++)
+                {
+                    if (grid[i, j] == 0)
+                    {
+                        hasZero = true;
+                        break;
+                    }
+                }
+
+                if (hasZero)
+                {
+                    break;
+                }
+            }
+
+            if (!hasZero)
+            {
+                // Reset grid to all zeros
+                for (int i = 0; i < numRows; i++)
+                {
+                    for (int j = 0; j < numCols; j++)
+                    {
+                        grid[i, j] = 0;
+                    }
+                }
+            }
+        }
+    }
+
+
+    public class Grid : Draw 
     {
         private int[,] grid = new int[6, 7];
 
@@ -172,27 +217,27 @@ namespace FinalProject
                 try
                 {
 
-                    if (grid[i, col] == value)
-                    {
+                if (grid[i, col] == value)
+                {
 
-                        // Check for diagonal connections in the down-right direction
-                        if (i + 3 <= 6 && col + 3 <= 7 && grid[i + 1, col + 1] == value && grid[i + 2, col + 2] == value && grid[i + 3, col + 3] == value)
-                        {
-                            win = true;
-                            return win;
-                        }
-                        // Check for diagonal connections in the down-left direction
-                        else if (i + 3 <= 6 && col - 3 >= 0 && grid[i + 1, col - 1] == value && grid[i + 2, col - 2] == value && grid[i + 3, col - 3] == value)
-                        {
-                            win = true;
-                            return win;
-                        }
-                        // Check for diagonal connections in the up-right direction
-                        else if (i - 3 >= 0 && col + 3 < 7 && grid[i - 1, col + 1] == value && grid[i - 2, col + 2] == value && grid[i - 3, col + 3] == value)
-                        {
-                            win = true;
-                            return win;
-                        }
+                    // Check for diagonal connections in the down-right direction
+                    if (i + 3 < 6 && col + 3 < 7 && grid[i + 1, col + 1] == value && grid[i + 2, col + 2] == value && grid[i + 3, col + 3] == value)
+                    {
+                        win = true;
+                        return win;
+                    }
+                    // Check for diagonal connections in the down-left direction
+                    else if (i + 3 < 6 && col - 3 >= 0 && grid[i + 1, col - 1] == value && grid[i + 2, col - 2] == value && grid[i + 3, col - 3] == value)
+                    {
+                        win = true;
+                        return win;
+                    }
+                    // Check for diagonal connections in the up-right direction
+                    else if (i - 3 >= 0 && col + 3 < 7 && grid[i - 1, col + 1] == value && grid[i - 2, col + 2] == value && grid[i - 3, col + 3] == value)
+                    {
+                        win = true;
+                        return win;
+                    }
                     // Check for diagonal connections in the up-left direction
                     else if (i - 3 >= 0 && col - 3 >= 0 && grid[i - 1, col - 1] == value && grid[i - 2, col - 2] == value && grid[i - 3, col - 3] == value)
                     {
@@ -201,10 +246,11 @@ namespace FinalProject
                     }
                 }
                 }
-                catch (System.IndexOutOfRangeException) 
+                catch (System.IndexOutOfRangeException)
                 {
                     break;
                 }
+
             }
             return false;
         }
@@ -236,12 +282,16 @@ namespace FinalProject
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Connect 4!");
+            Console.WriteLine("Rules: \n" +
+                "Player 1 = 1 \n" +
+                "Player 2 = 2 \n" +
+                "First Player connect 4 of their # token wins");
             bool winner = false;
 
             Grid grid = new Grid();
             grid.Display();
-
-            players player = new players(1);
+            string name = "the gamer";
+            players player = new players(1,name);
             int playersmove;
 
             while (winner == false)
