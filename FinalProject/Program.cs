@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Data.Common;
-using System.Net.Http.Headers;
 using System.Numerics;
-using System.Reflection.Metadata;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Security.Cryptography;
 
 namespace FinalProject
 {
@@ -25,7 +22,7 @@ namespace FinalProject
     public class players
     {
         int currentPlayer;
-        public players(int  player)
+        public players(int player)
         {
             currentPlayer = player;
         }
@@ -61,15 +58,24 @@ namespace FinalProject
                 return "Invalid Player Count";
             }
         }
+
         public int GetInput()
         {
-            Console.WriteLine("Enter the Column Number You Want to Place a Peice in: \n Options: 1, 2, 3, 4, 5, 6, 7");
-            int input = int.Parse(Console.ReadLine());
+            Console.WriteLine("Enter the Column Number You Want to Place a Peice in: \nOptions: 1, 2, 3, 4, 5, 6, 7");
+            int input = 0;
+            try
+            {
+                input = int.Parse(Console.ReadLine());
+            }
+            catch (System.FormatException)
+            {
+                Console.WriteLine("Invalid Input Try Again!\n");
+            }
             input--;
             return input;
         }
     }
-    public class Grid 
+    public class Grid
     {
         private int[,] grid = new int[6, 7];
 
@@ -87,13 +93,22 @@ namespace FinalProject
 
         public void ReplaceGridValue(int col, int value)
         {
-            for (int row = 5; row >= 0; row--)
+            try
             {
-                if (grid[row, col] == 0)
+                for (int row = 5; row >= 0; row--)
                 {
-                    grid[row, col] = value;
-                    break;
+
+                    if (grid[row, col] == 0)
+                    {
+                        grid[row, col] = value;
+                        break;
+                    }
+
                 }
+            }
+            catch (System.IndexOutOfRangeException)
+            {
+                Console.WriteLine("Out Of The Board or Invalid Input\n");
             }
         }
 
@@ -102,116 +117,135 @@ namespace FinalProject
             bool win = false;
             for (int i = 0; i < 6; i++)
             {
-                if (grid[i, col] == value && grid[i - 1, col] == value && grid[i - 2, col] == value && grid[i - 3, col] == value)
+                try
                 {
-                    win = true;
+                    if (grid[i, col] == value && grid[i - 1, col] == value && grid[i - 2, col] == value && grid[i - 3, col] == value)
+                    {
+                        win = true;
+                        return win;
+                    }
+                    else if (grid[i, col] == value && grid[i + 1, col] == value && grid[i + 2, col] == value && grid[i + 3, col] == value)
+                    {
+                        win = true;
+                        return win;
+                    }
+                }
+                catch (System.IndexOutOfRangeException)
+                {
                     break;
                 }
-                else if (grid[i, col] == value && grid[i + 1, col] == value && grid[i + 2, col] == value && grid[i + 3, col] == value)
-                {
-                    win = true;
-                    break;
-                }
             }
-
-
-            if (win == true)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-            
-         
+            return false;
         }
 
-        public string CheckWinHorizontal(int col, int value)
+        public bool CheckWinHorizontal(int col, int value)
         {
             bool win = false;
             for (int i = 0; i < 6; i++)
             {
-                if (grid[i, col] == value && grid[i, col - 1] == value && grid[i, col - 2] == value && grid[i, col - 3] == value)
+                try
                 {
-                    win = true;
+                    if (grid[i, col] == value && grid[i, col - 1] == value && grid[i, col - 2] == value && grid[i, col - 3] == value)
+                    {
+                        win = true;
+                        return win;
+                    }
+                    else if (grid[i, col] == value && grid[i, col + 1] == value && grid[i, col + 2] == value && grid[i, col + 3] == value)
+                    {
+                        win = true;
+                        return win;
+                    }
+                }
+                catch (System.IndexOutOfRangeException)
+                {
                     break;
                 }
-                else if (grid[i, col] == value && grid[i, col + 1] == value && grid[i, col + 2] == value && grid[i, col + 3] == value)
-                {
-                    win = true;
-                    break;
-                }
             }
-
-            if (win == true)
-            {
-                return "Congrats Player " + value;
-            }
-            else
-            {
-                return "e";
-            }
+            return false;
         }
 
-
-    }
-
-  public class WinnerFormula
-    {
-        Grid grid;
-        public WinnerFormula(Grid grid)
+        public bool CheckWinDiagonal(int col, int value)
         {
-            
-        }
-    }
+            bool win = false;
+            for (int i = 0; i < 6; i++)
+            {
+                if (grid[i, col] == value)
+                {
 
+                    // Check for diagonal connections in the down-right direction
+                    if (i + 3 < 6 && col + 3 < 7 && grid[i + 1, col + 1] == value && grid[i + 2, col + 2] == value && grid[i + 3, col + 3] == value)
+                    {
+                        win = true;
+                        return win;
+                    }
+                    // Check for diagonal connections in the down-left direction
+                    else if (i + 3 < 6 && col - 3 >= 0 && grid[i + 1, col - 1] == value && grid[i + 2, col - 2] == value && grid[i + 3, col - 3] == value)
+                    {
+                        win = true;
+                        return win;
+                    }
+                    // Check for diagonal connections in the up-right direction
+                    else if (i - 3 >= 0 && col + 3 < 7 && grid[i - 1, col + 1] == value && grid[i - 2, col + 2] == value && grid[i - 3, col + 3] == value)
+                    {
+                        win = true;
+                        return win;
+                    }
+                    // Check for diagonal connections in the up-left direction
+                    else if (i - 3 >= 0 && col - 3 >= 0 && grid[i - 1, col - 1] == value && grid[i - 2, col - 2] == value && grid[i - 3, col - 3] == value)
+                    {
+                        win = true;
+                        return win;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool FindWinner(int col, int value)
+        {
+            /*if(CheckWinDiagonal(col, value) == true)
+            {
+                Console.WriteLine("Congradulations Player " + value);
+                return true;
+            }
+            else */
+            if (CheckWinHorizontal(col, value) == true)
+            {
+                Console.WriteLine("Congradulations Player " + value);
+                return true;
+            }
+            else if (CheckWinVertical(col, value) == true)
+            {
+                Console.WriteLine("Congradulations Player " + value);
+                return true;
+            }
+            return false;
+        }
+
+    }
 
     internal class Program
     {
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Connect 4!");
-            Console.WriteLine("Rules \n" + "Player 1 = 1\n" + "Player 2 = 2\n" + "if one of the player connect 4 tokens in a line They win" );
-                
+            bool winner = false;
+
             Grid grid = new Grid();
             grid.Display();
 
             players player = new players(1);
-            
-            int Winner = 0;
+            int playersmove;
 
-            while (Winner == 0)
+            while (winner == false)
             {
-                try
-                {
                 Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-                grid.ReplaceGridValue(player.GetInput(), player.icon());
-                Console.WriteLine();
-                player.UpdatePlayer();
+                playersmove = player.GetInput();
+                grid.ReplaceGridValue(playersmove, player.icon());
                 grid.Display();
-                
-                
-                }
-                catch (Exception) 
-                { 
-                    Console.WriteLine("\n" +
-                        "Error pls input either 1, 2, 3, 4, 5, 6, or 7"); 
-                }
-                
-                
-               
-               
-
+                winner = grid.FindWinner(playersmove, player.icon());
+                player.UpdatePlayer();
             }
-                
-            
-
-            
-
-            
-
-
         }
     }
 }
