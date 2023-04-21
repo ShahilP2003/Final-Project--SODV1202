@@ -169,27 +169,30 @@ namespace FinalProject
             bool win = false;
             for (int i = 0; i < 6; i++)
             {
-                if (grid[i, col] == value)
+                try
                 {
 
-                    // Check for diagonal connections in the down-right direction
-                    if (i + 3 < 6 && col + 3 < 7 && grid[i + 1, col + 1] == value && grid[i + 2, col + 2] == value && grid[i + 3, col + 3] == value)
+                    if (grid[i, col] == value)
                     {
-                        win = true;
-                        return win;
-                    }
-                    // Check for diagonal connections in the down-left direction
-                    else if (i + 3 < 6 && col - 3 >= 0 && grid[i + 1, col - 1] == value && grid[i + 2, col - 2] == value && grid[i + 3, col - 3] == value)
-                    {
-                        win = true;
-                        return win;
-                    }
-                    // Check for diagonal connections in the up-right direction
-                    else if (i - 3 >= 0 && col + 3 < 7 && grid[i - 1, col + 1] == value && grid[i - 2, col + 2] == value && grid[i - 3, col + 3] == value)
-                    {
-                        win = true;
-                        return win;
-                    }
+
+                        // Check for diagonal connections in the down-right direction
+                        if (i + 3 <= 6 && col + 3 <= 7 && grid[i + 1, col + 1] == value && grid[i + 2, col + 2] == value && grid[i + 3, col + 3] == value)
+                        {
+                            win = true;
+                            return win;
+                        }
+                        // Check for diagonal connections in the down-left direction
+                        else if (i + 3 <= 6 && col - 3 >= 0 && grid[i + 1, col - 1] == value && grid[i + 2, col - 2] == value && grid[i + 3, col - 3] == value)
+                        {
+                            win = true;
+                            return win;
+                        }
+                        // Check for diagonal connections in the up-right direction
+                        else if (i - 3 >= 0 && col + 3 < 7 && grid[i - 1, col + 1] == value && grid[i - 2, col + 2] == value && grid[i - 3, col + 3] == value)
+                        {
+                            win = true;
+                            return win;
+                        }
                     // Check for diagonal connections in the up-left direction
                     else if (i - 3 >= 0 && col - 3 >= 0 && grid[i - 1, col - 1] == value && grid[i - 2, col - 2] == value && grid[i - 3, col - 3] == value)
                     {
@@ -197,19 +200,23 @@ namespace FinalProject
                         return win;
                     }
                 }
+                }
+                catch (System.IndexOutOfRangeException) 
+                {
+                    break;
+                }
             }
             return false;
         }
 
         public bool FindWinner(int col, int value)
         {
-            /*if(CheckWinDiagonal(col, value) == true)
+            if(CheckWinDiagonal(col, value) == true)
             {
                 Console.WriteLine("Congradulations Player " + value);
                 return true;
             }
-            else */
-            if (CheckWinHorizontal(col, value) == true)
+            else if (CheckWinHorizontal(col, value) == true)
             {
                 Console.WriteLine("Congradulations Player " + value);
                 return true;
