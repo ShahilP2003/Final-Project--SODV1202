@@ -62,7 +62,15 @@ namespace FinalProject
         public int GetInput()
         {
             Console.WriteLine("Enter the Column Number You Want to Place a Peice in: \nOptions: 1, 2, 3, 4, 5, 6, 7");
-            int input = int.Parse(Console.ReadLine());
+            int input = 0;
+            try
+            {
+               input = int.Parse(Console.ReadLine());
+            }
+            catch(System.FormatException) 
+            {
+                Console.WriteLine("Invalid Input Try Again!\n");
+            }
             input--;
             return input;
         }
@@ -85,72 +93,76 @@ namespace FinalProject
 
         public void ReplaceGridValue(int col, int value)
         {
-            for (int row = 5; row >= 0; row--)
+            try
             {
-                if (grid[row, col] == 0)
+                for (int row = 5; row >= 0; row--)
                 {
-                    grid[row, col] = value;
-                    break;
+
+                    if (grid[row, col] == 0)
+                    {
+                        grid[row, col] = value;
+                        break;
+                    }
+
                 }
+            }
+            catch (System.IndexOutOfRangeException)
+            {
+                Console.WriteLine("Out Of The Board or Invalid Input\n");
             }
         }
 
-        public string CheckWinVertical(int col, int value)
+        public bool CheckWinVertical(int col, int value)
         {
             bool win = false;
             for (int i = 0; i < 6; i++)
             {
+                try { 
                 if (grid[i, col] == value && grid[i - 1, col] == value && grid[i - 2, col] == value && grid[i - 3, col] == value)
                 {
                     win = true;
-                    break;
+                    return win;
                 }
                 else if (grid[i, col] == value && grid[i + 1, col] == value && grid[i + 2, col] == value && grid[i + 3, col] == value)
                 {
                     win = true;
+                    return win;
+                }
+                }
+                catch (System.IndexOutOfRangeException)
+                {
                     break;
                 }
             }
-
-
-            if (win == true)
-            {
-                return "Congrats Player " + value;
-            }
-            else
-            {
-                return "e";
-            }
+            return false;
         }
 
-        public string CheckWinHorizontal(int col, int value)
+        public bool CheckWinHorizontal(int col, int value)
         {
             bool win = false;
             for (int i = 0; i < 6; i++)
             {
+            try { 
                 if (grid[i, col] == value && grid[i, col - 1] == value && grid[i, col - 2] == value && grid[i, col - 3] == value)
                 {
                     win = true;
-                    break;
+                    return win;
                 }
                 else if (grid[i, col] == value && grid[i, col + 1] == value && grid[i, col + 2] == value && grid[i, col + 3] == value)
                 {
                     win = true;
+                    return win;
+                }
+                }
+                catch (System.IndexOutOfRangeException)
+                {
                     break;
                 }
             }
-
-            if (win == true)
-            {
-                return "Congrats Player " + value;
-            }
-            else
-            {
-                return "e";
-            }
+            return false;
         }
 
-        public string CheckWinDiagonal(int col, int value)
+        public bool CheckWinDiagonal(int col, int value)
         {
             bool win = false;
             for (int i = 0; i < 6; i++)
@@ -162,105 +174,76 @@ namespace FinalProject
                     if (i + 3 < 6 && col + 3 < 7 && grid[i + 1, col + 1] == value && grid[i + 2, col + 2] == value && grid[i + 3, col + 3] == value)
                     {
                         win = true;
-                        break;
+                        return win;
                     }
                     // Check for diagonal connections in the down-left direction
                     else if (i + 3 < 6 && col - 3 >= 0 && grid[i + 1, col - 1] == value && grid[i + 2, col - 2] == value && grid[i + 3, col - 3] == value)
                     {
                         win = true;
-                        break;
+                        return win;
                     }
                     // Check for diagonal connections in the up-right direction
                     else if (i - 3 >= 0 && col + 3 < 7 && grid[i - 1, col + 1] == value && grid[i - 2, col + 2] == value && grid[i - 3, col + 3] == value)
                     {
                         win = true;
-                        break;
+                        return win;
                     }
                     // Check for diagonal connections in the up-left direction
                     else if (i - 3 >= 0 && col - 3 >= 0 && grid[i - 1, col - 1] == value && grid[i - 2, col - 2] == value && grid[i - 3, col - 3] == value)
                     {
                         win = true;
-                        break;
+                        return win;
                     }
                 }
             }
+            return false;
+        }
 
-            if (win == true)
+        public bool FindWinner(int col, int value)
+        {
+            /*if(CheckWinDiagonal(col, value) == true)
             {
-                return "Congrats Player " + value;
+                Console.WriteLine("Congradulations Player " + value);
+                return true;
             }
-            else
+            else */
+            if (CheckWinHorizontal(col, value) == true)
             {
-                return "e";
+                Console.WriteLine("Congradulations Player " + value);
+                return true;
             }
+            else if (CheckWinVertical(col, value) == true)
+            {
+                Console.WriteLine("Congradulations Player " + value);
+                return true;
+            }
+            return false;
         }
 
     }
-
-
 
     internal class Program
     {
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Connect 4!");
+            bool winner = false;
 
             Grid grid = new Grid();
             grid.Display();
 
             players player = new players(1);
+            int playersmove;
 
-            Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(player.GetInput(), player.icon());
-            grid.Display();
-            player.UpdatePlayer();
-
-            Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(player.GetInput(), player.icon());
-            grid.Display();
-            player.UpdatePlayer();
-
-            Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(player.GetInput(), player.icon());
-            grid.Display();
-            player.UpdatePlayer();
-
-            Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(player.GetInput(), player.icon());
-            grid.Display();
-            player.UpdatePlayer();
-
-            Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(player.GetInput(), player.icon());
-            grid.Display();
-            player.UpdatePlayer();
-
-            Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(player.GetInput(), player.icon());
-            grid.Display();
-            player.UpdatePlayer();
-
-            Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(player.GetInput(), player.icon());
-            grid.Display();
-            player.UpdatePlayer();
-
-            Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(player.GetInput(), player.icon());
-            grid.Display();
-            player.UpdatePlayer();
-
-            Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(player.GetInput(), player.icon());
-            grid.Display();
-            player.UpdatePlayer();
-
-            Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
-            grid.ReplaceGridValue(player.GetInput(), player.icon());
-            grid.Display();
-            Console.WriteLine(grid.CheckWinDiagonal(player.GetInput(), player.icon()));
-            player.UpdatePlayer();
-
+            while (winner == false)
+            {
+                Console.WriteLine("\nPlayer " + player.DisplayPlayer() + ", choose a column ");
+                playersmove = player.GetInput();
+                grid.ReplaceGridValue(playersmove, player.icon());
+                grid.Display();
+                winner = grid.FindWinner(playersmove, player.icon());
+                player.UpdatePlayer();
+            }
         }
     }
 }
